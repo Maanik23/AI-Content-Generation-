@@ -273,9 +273,6 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## 📄 License
-
-This project is proprietary software. All rights reserved.
 
 ## 🙏 Acknowledgments
 
@@ -292,9 +289,3 @@ For technical support or questions:
 - Monitor health: `GET /monitoring/health`
 - Review metrics: `GET /monitoring/metrics`
 - Create an [Issue](https://github.com/Maanik23/AI-Content-Generation-/issues)
-
----
-
-**Version**: 2.0.0  
-**Status**: Production Ready ✅  
-**Last Updated**: December 2024
