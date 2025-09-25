@@ -1,0 +1,2 @@
+# AI Content Factory Application
+

@@ -1,0 +1,57 @@
+# ========================================
+# FIAE AGENTS PROJECT (AI Content Factory)
+# ========================================
+# This is the FIAE project's API container
+# Connects to shared n8n instance for automation
+# Shared n8n: http://192.168.178.81:5678
+
+services:
+  # ========================================
+  # FIAE AGENTS API (AI Content Factory)
+  # ========================================
+  # Handles document processing, AI content generation
+  # Connects to shared n8n for workflow automation
+  ai-content-factory:
+    build:
+      context: .
+      target: development
+    container_name: ai-content-factory
+    ports:
+      - "8000:8000"
+    environment:
+      - GOOGLE_PROJECT_ID=${GOOGLE_PROJECT_ID}
+      - GOOGLE_CREDENTIALS_PATH=/app/credentials/google-credentials.json
+      - GOOGLE_DRIVE_FOLDER_ID=${GOOGLE_DRIVE_FOLDER_ID}
+      - GOOGLE_DRIVE_REVIEW_FOLDER_ID=${GOOGLE_DRIVE_REVIEW_FOLDER_ID}
+      - GOOGLE_DRIVE_DONE_FOLDER_ID=${GOOGLE_DRIVE_DONE_FOLDER_ID}
+      - GOOGLE_SHEETS_ID=${GOOGLE_SHEETS_ID}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - ELEVENLABS_API_KEY=${ELEVENLABS_API_KEY}
+      - ELEVENLABS_VOICE_ID=${ELEVENLABS_VOICE_ID}
+      - LOG_LEVEL=INFO
+      - N8N_URL=http://192.168.178.81:5678
+    volumes:
+      - ./credentials:/app/credentials:ro
+      - ./temp:/app/temp
+    networks:
+      - shared-n8n-network
+      - marketingwithn8nandai_marketing-network
+    # No dependency on shared n8n (runs independently)
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+# ========================================
+# NETWORKS (Communication)
+# ========================================
+networks:
+  shared-n8n-network:
+    external: true
+    # External network connecting to shared n8n
+  marketingwithn8nandai_marketing-network:
+    external: true
+    # External network connecting to marketing project
